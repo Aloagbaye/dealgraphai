@@ -76,3 +76,25 @@ The project currently supports a baseline local retrieval endpoint:
 
 ```text
 GET /api/search/documents?q=fundraising%20timeline&limit=5
+
+DealGraph AI now includes a provider-neutral LLM layer.
+
+Supported providers:
+
+- `mock`
+- `openai`
+- `anthropic`
+
+The RAG endpoint can use the default provider from environment variables or accept a per-request override.
+
+Example request:
+
+```json
+{
+  "question": "What did the team discuss about fundraising timeline?",
+  "limit": 5,
+  "llm_provider": "mock"
+}
+```
+
+The provider abstraction keeps the RAG pipeline independent from a specific model vendor and makes it easier to test, evaluate, and compare model behavior.
