@@ -59,3 +59,20 @@ Key decisions:
 5. Use contextual compression to reduce token usage and improve factual grounding.
 6. Use citations and evaluation to make the system measurable and trustworthy.
 7. Use confirmation and audit logs before CRM writeback.
+
+## Data Access Design
+
+The backend separates raw synthetic CRM records from RAG-ready documents.
+
+Structured records such as companies, contacts, deals, and relationships are loaded from JSON files. RAG-ready interaction notes are loaded from JSONL because each line can be treated as an independent retrievable document.
+
+This separation matters because production AI systems often need to combine structured lookup, metadata filtering, and semantic search. A user question may require exact company or deal lookup before vector retrieval begins.
+
+The data preview API is intentionally filterable by fields like company_id, deal_id, visibility, doc_type, and source_type. These filters prepare the system for permission-aware retrieval, where the model only receives context the user is allowed to access.
+
+## Current Retrieval Features
+
+The project currently supports a baseline local retrieval endpoint:
+
+```text
+GET /api/search/documents?q=fundraising%20timeline&limit=5

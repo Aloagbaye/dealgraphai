@@ -6,7 +6,7 @@ from typing import Any
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
-DATA_DIR = PROJECT_ROOT / "data" / "synthetic_seed"
+DATA_DIR = PROJECT_ROOT / "backend" / "data" / "synthetic_seed"
 
 
 class DataFileNotFoundError(FileNotFoundError):
