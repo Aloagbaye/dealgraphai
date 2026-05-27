@@ -5,6 +5,7 @@ from app.api.health import router as health_router
 from app.api.rag import router as rag_router
 from app.api.search import router as search_router
 from app.core.config import get_settings
+from app.api.graph import router as graph_router
 
 
 settings = get_settings()
@@ -19,3 +20,4 @@ app.include_router(health_router, prefix="/api", tags=["health"])
 app.include_router(data_router, prefix="/api/data", tags=["data"])
 app.include_router(search_router, prefix="/api/search", tags=["search"])
 app.include_router(rag_router, prefix="/api/rag", tags=["rag"])
+app.include_router(graph_router, prefix="/api/graph", tags=["graph"])

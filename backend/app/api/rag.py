@@ -22,6 +22,7 @@ def answer_question_endpoint(request: RagAnswerRequest) -> RagAnswerResponse:
             doc_type=request.doc_type,
             sector=request.sector,
             sentiment=request.sentiment,
+            include_graph_context=request.include_graph_context,
             llm_provider=request.llm_provider,
         )
 

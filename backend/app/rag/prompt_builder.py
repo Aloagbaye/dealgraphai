@@ -36,17 +36,18 @@ snippet:
 
     return "\n\n---\n\n".join(context_blocks)
 
-
 def build_grounded_answer_prompt(
     question: str,
     retrieved_results: list[dict[str, Any]],
+    graph_context_text: str | None = None,
 ) -> str:
     context = format_retrieved_context(retrieved_results)
+    graph_context_text = graph_context_text or "No graph context provided."
 
     return f"""
 You are DealGraph AI, a relationship-intelligence assistant for private capital CRM workflows.
 
-Answer the user's question using only the retrieved context below.
+Answer the user's question using only the retrieved document context and graph context below.
 
 Rules:
 1. Do not invent facts.
@@ -57,12 +58,16 @@ Rules:
 6. Do not cite or mention sources that are not provided.
 7. If the sources do not answer the question, say that clearly.
 8. Do not expose hidden chain-of-thought. Provide a clear final answer only.
+9. Treat graph context as structured evidence for relationship ownership and warm introductions.
 
 User question:
 {question}
 
-Retrieved context:
+Retrieved document context:
 {context}
+
+Graph context:
+{graph_context_text}
 
 Write the answer in this structure:
 
@@ -71,6 +76,7 @@ Answer:
 
 Evidence Used:
 - [Brief source-based evidence summary]
+- [Brief graph-based evidence summary if graph context is available]
 
 Recommended Next Action:
 - [Recommended action or "No clear action from retrieved context"]

@@ -15,7 +15,7 @@ class RagAnswerRequest(BaseModel):
     doc_type: str | None = None
     sector: str | None = None
     sentiment: str | None = None
-
+    include_graph_context: bool = True
     # Supported values: mock, openai, anthropic.
     # If omitted, backend/.env LLM_PROVIDER is used.
     llm_provider: str | None = None

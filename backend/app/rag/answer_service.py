@@ -7,6 +7,10 @@ from app.llm.factory import get_llm_client
 from app.rag.prompt_builder import build_grounded_answer_prompt
 from app.rag.schemas import RagCitation
 from app.services.search_service import search_documents
+from app.rag.graph_context import (
+    build_graph_context,
+    format_graph_context_for_prompt,
+)
 
 
 def _extract_confidence(answer: str, result_count: int) -> str:
@@ -55,6 +59,7 @@ def answer_question(
     doc_type: str | None = None,
     sector: str | None = None,
     sentiment: str | None = None,
+    include_graph_context: bool = True,
     llm_provider: str | None = None,
 ) -> dict[str, Any]:
     """Basic RAG answer flow with provider-based LLM generation."""
@@ -77,9 +82,21 @@ def answer_question(
     if not results:
         warnings.append("No relevant documents were retrieved.")
 
+    graph_context = {"included": False}
+    graph_context_text = "No graph context provided."
+
+    if include_graph_context:
+        graph_context = build_graph_context(
+            company_id=company_id,
+            contact_id=None,
+            limit=5,
+        )
+        graph_context_text = format_graph_context_for_prompt(graph_context)
+
     prompt = build_grounded_answer_prompt(
-        question=question,
-        retrieved_results=results,
+    question=question,
+    retrieved_results=results,
+    graph_context_text=graph_context_text,
     )
 
     llm_client = get_llm_client(llm_provider)
@@ -91,6 +108,7 @@ def answer_question(
         "question": question,
         "answer": llm_response.text,
         "confidence": confidence,
+        "graph_context": graph_context,
         "llm": {
             "provider": llm_response.provider,
             "model": llm_response.model,

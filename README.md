@@ -98,3 +98,30 @@ Example request:
 ```
 
 The provider abstraction keeps the RAG pipeline independent from a specific model vendor and makes it easier to test, evaluate, and compare model behavior.
+
+## Module 4: Relationship Graph Intelligence
+
+DealGraphAI now includes an in-memory relationship graph layer.
+
+The graph service builds nodes and edges from CRM-style structured data:
+
+- team members
+- contacts
+- companies
+- deals
+- relationship owners
+- contact-company links
+- deal-company links
+- deal-team links
+
+The API supports:
+
+- graph summary
+- node search
+- node neighbor lookup
+- strongest relationships for a company
+- strongest relationships for a contact
+- relationship path search
+- warm intro path discovery
+
+Graph context can also be included in RAG answers so the assistant can answer relationship-oriented questions using structured evidence, not only retrieved text snippets.
